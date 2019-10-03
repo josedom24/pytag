@@ -3,16 +3,20 @@ from os.path import abspath
 import eyed3
 import yaml
 import os
+import sys
 
 def ls(ruta = getcwd()):
     return [abspath(arch.path) for arch in scandir(ruta) if arch.is_file() and arch.name.endswith("mp3")]
 
+if len(sys.argv)!=3:
+    print("Debes indicar la ruta donde se encuentran los ficheros y si quieres modificar nombre de ficheros:\npython3 tag.py '~/musica/disco' --change")
+    sys.exit(1)
 
 with open("configuration.yaml") as fichero:
     doc=yaml.load(fichero,Loader=yaml.FullLoader)
 
 
-files = ls(".")
+files = ls(sys.argv[1])
 
 if len(files)!=len(doc["tracks"]):
     print("No coinciden el número de canciones")
@@ -40,6 +44,8 @@ else:
 
             audiofile.tag.images.set(3,imagedata,"image/jpeg","you can put a description here")
             audiofile.tag.save()
-            path=file.split("/")
-            nombre_nuevo="/".join(path[:-1])+"/"+track["titulo"]+".mp3"
-            os.rename(file,nombre_nuevo)
+            if sys.argv[2]=="--change":
+                path=file.split("/")
+                nombre_nuevo="/".join(path[:-1])+"/"+track["titulo"]+".mp3"
+                os.rename(file,nombre_nuevo)
+                
