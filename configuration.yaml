@@ -1,0 +1,11 @@
+album: ""
+artista: ""
+año: ""
+imagen: ""
+canciones: 1
+tracks:
+  - num: 1
+    titulo: ""
+  - num: 2
+    titulo: ""
+  
